@@ -121,14 +121,11 @@ export const pokemonSlice = createSlice({
         },
         [getPokemons.fulfilled]: (state, action) => {
             state.loading = false;
-            const _list = action.payload || [];
-
-            const { search, type, page } = state;
-
-            if((search || type) && page ===1 ) {
-                state.pokemons = _list;
+            const { search, type } = state;
+            if ((search || type) && state.page === 1) {
+                state.pokemons = action.payload;
             } else {
-                state.pokemons = [...state.pokemons, ..._list];
+                state.pokemons = [...state.pokemons, ...action.payload];
             }
             
         },
