@@ -16,7 +16,7 @@ export const getPokemons = createAsyncThunk('pokemons/getPokemons', async ({ pag
             });
         };
         await timeout();
-        return response.data;
+        return response;
     } catch (error) {
         return rejectWithValue(error);
     }
@@ -26,8 +26,9 @@ export const getPokemonById = createAsyncThunk('pokemons/getPokemonById', async 
     try {
         let url = `/pokemons/${id}`;
         const response = await apiService.get(url);
-        if (!response.data) return rejectWithValue({ message: 'No data' });
-        return response.data;
+        if (!response) return rejectWithValue({ message: 'No data' });
+        const { pokemon, previousPokemon, nextPokemon } = response;
+        return  { pokemon, previousPokemon, nextPokemon }; 
     } catch (error) {
         return rejectWithValue(error);
     }
@@ -70,7 +71,7 @@ export const deletePokemon = createAsyncThunk('pokemons/deletePokemon', async ({
 export const pokemonSlice = createSlice({
     name: 'pokemons',
     initialState: {
-        isLoading: false,
+        loading: false,
         pokemons: [],
         pokemon: {
             pokemon: null,
@@ -120,16 +121,22 @@ export const pokemonSlice = createSlice({
         },
         [getPokemons.fulfilled]: (state, action) => {
             state.loading = false;
-            const { search, type } = state;
-            if ((search || type) && state.page === 1) {
-                state.pokemons = action.payload;
+            const _list = action.payload || [];
+
+            const { search, type, page } = state;
+
+            if((search || type) && page ===1 ) {
+                state.pokemons = _list;
             } else {
-                state.pokemons = [...state.pokemons, ...action.payload];
+                state.pokemons = [...state.pokemons, ..._list];
             }
+            
         },
         [getPokemonById.fulfilled]: (state, action) => {
             state.loading = false;
-            state.pokemon = action.payload;
+            const { pokemon, nextPokemon, previousPokemon } = action.payload;
+            state.pokemon = { pokemon, nextPokemon, previousPokemon };
+
         },
         [addPokemon.fulfilled]: (state) => {
             state.loading = false;

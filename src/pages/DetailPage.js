@@ -23,7 +23,8 @@ export const DetailPage = () => {
 		dispatch(getPokemonById(id));
 	}, [id, dispatch]);
 
-	const weaknesses = calculateWeaknesses(pokemon?.types);
+	const weaknesses = calculateWeaknesses(pokemon?.types.map(type => type.toLowerCase()));
+
 	return (
 		<Container maxWidth="lg" disableGutters sx={styles.container}>
 			<Box position="relative">
@@ -88,7 +89,7 @@ export const DetailPage = () => {
 				<Grid container spacing={2}>
 					<Grid item xs={12} md={6}>
 						<Box sx={{ backgroundColor: '#F2F2F2', borderRadius: 5, padding: 3 }}>
-							<CardMedia component="img" image={`${pokemon?.url}`} alt="Missing image" sx={{ margin: 'auto', objectFit: 'contain', width: '100%', borderRadius: 5 }} />
+							<CardMedia component="img" image={`http://localhost:3001${pokemon?.image}`} alt="Missing image" sx={{ margin: 'auto', objectFit: 'contain', width: '100%', borderRadius: 5 }} />
 						</Box>
 					</Grid>
 					<Grid item xs={12} md={6}>
@@ -116,7 +117,7 @@ export const DetailPage = () => {
 							</Box>
 							<Typography variant="p">Type</Typography>
 							<Grid container spacing={1}>
-								{pokemon?.types.map((type) => (
+								{ pokemon?.types.map((type) => (
 									<Grid item key={type} xs={4}>
 										<PokeType type={type} size="large" color="white" />
 									</Grid>
@@ -193,7 +194,6 @@ const calculateWeaknesses = (types) => {
 		steel: 0,
 		fairy: 0,
 	};
-
 	types.forEach((type) => {
 		weaknesses[type].weak.forEach((t) => total[t]++);
 		weaknesses[type].resistant.forEach((t) => total[t]--);
