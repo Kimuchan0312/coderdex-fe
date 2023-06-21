@@ -89,7 +89,7 @@ export const DetailPage = () => {
 				<Grid container spacing={2}>
 					<Grid item xs={12} md={6}>
 						<Box sx={{ backgroundColor: '#F2F2F2', borderRadius: 5, padding: 3 }}>
-							<CardMedia component="img" image={`http://localhost:3001${pokemon?.image}`} alt="Missing image" sx={{ margin: 'auto', objectFit: 'contain', width: '100%', borderRadius: 5 }} />
+							<CardMedia component="img" image={`https://pokemon-be-production.up.railway.app${pokemon?.image}`} alt="Missing image" sx={{ margin: 'auto', objectFit: 'contain', width: '100%', borderRadius: 5 }} />
 						</Box>
 					</Grid>
 					<Grid item xs={12} md={6}>
