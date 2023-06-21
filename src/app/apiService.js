@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiService = axios.create({
-    baseURL: 'http://pokemon-be-production.up.railway.app',
+    baseURL: 'https://pokemon-be-production.up.railway.app',
 });
 
 apiService.interceptors.request.use(
